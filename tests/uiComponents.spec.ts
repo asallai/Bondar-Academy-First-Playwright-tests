@@ -24,7 +24,4 @@ test.describe('Form Layouts page', async () => {
         // Locator assertion
         await expect(usingTheGridEmailInput).toHaveValue('test2@test.com')
     })
-
-
-
 })
