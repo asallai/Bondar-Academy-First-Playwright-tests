@@ -22,10 +22,10 @@ test('Alternative waits', async ({ page }) => {
     const successButton = page.locator('.bg-success')
     
     // wait for element
-    //await page.waitForSelector('.bg-success')
+    await page.waitForSelector('.bg-success')
 
     // wait for particular response
-    //await page.waitForResponse('http://uitestingplayground.com/ajaxdata')
+    await page.waitForResponse('http://uitestingplayground.com/ajaxdata')
 
     // wait for network calls to be completed (NOT RECOMMENDED)
     await page.waitForLoadState('networkidle')

@@ -47,7 +47,7 @@ test('User Facing Locators', async ({ page }) => {
 
     await page.getByTitle('IoT Dashboard').click()
 
-    // data-testid
+    // by data-testid
     await page.getByTestId('SignIn').click()
 })
 
