@@ -51,3 +51,23 @@ test.describe('Form Layouts page', async () => {
 		await expect(usingTheGridEmailForm.getByLabel('Option 2')).toBeChecked()
 	})
 })
+
+test('Checkboxes', async ({ page }) => {
+	await page.getByText('Modal & Overlays').click()
+	await page.getByText('Toastr').click()
+
+	await page.getByRole('checkbox', { name: 'Hide on click' }).uncheck({ force: true })
+
+	await page.getByRole('checkbox', { name: 'Prevent arising of duplicate toast' }).check({ force: true })
+
+	const allBoxes = page.getByRole('checkbox')
+	// all() creates an array from the locators so that we can iterate over them
+	// Since all() returns a Promise, we should use await.
+	for (const box of await allBoxes.all()) {
+		await box.check({ force: true })
+		expect(await box.isChecked()).toBeTruthy()
+
+		await box.uncheck({ force: true })
+		expect(await box.isChecked()).toBeFalsy()
+	}
+})
