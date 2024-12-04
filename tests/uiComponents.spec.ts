@@ -71,3 +71,33 @@ test('Checkboxes', async ({ page }) => {
 		expect(await box.isChecked()).toBeFalsy()
 	}
 })
+
+test('Lists and Dropdowns', async ({ page }) => {
+	const menuDropdown = page.locator('ngx-header nb-select')
+	await menuDropdown.click()
+
+	page.getByRole('list') // when the list has UL tag
+	page.getByRole('listitem') // whan the list has LI tag
+
+	// const optionList = page.getByRole('list').locator('nb-option')
+	const optionList = page.locator('nb-option-list nb-option')
+	await expect(optionList).toHaveText(['Light', 'Dark', 'Cosmic', 'Corporate'])
+	await optionList.filter({ hasText: 'Cosmic' }).click()
+
+	// background color checking
+	const header = page.locator('nb-layout-header')
+	await expect(header).toHaveCSS('background-color', 'rgb(50, 50, 89)')
+
+	const colors = {
+		"Light": 'rgb(255, 255, 255)',
+		"Dark": 'rgb(34, 43, 69)',
+		"Cosmic": 'rgb(50, 50, 89)',
+		"Corporate": 'rgb(255, 255, 255)',
+	}
+
+	for (const color in colors) {
+		await menuDropdown.click()
+		await optionList.filter({ hasText: color }).click()
+		await expect(header).toHaveCSS('background-color', colors[color]) // [] get the VALUE of the object element
+	}
+})
