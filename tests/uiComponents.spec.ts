@@ -63,7 +63,7 @@ test('Checkboxes', async ({ page }) => {
 	const allBoxes = page.getByRole('checkbox')
 	// all() creates an array from the locators so that we can iterate over them
 	// Since all() returns a Promise, we should use await.
-	for (const box of await allBoxes.all()) {
+	for (const box of await allBoxes.all()) {   // iterating an array -> use for-of
 		await box.check({ force: true })
 		expect(await box.isChecked()).toBeTruthy()
 
@@ -95,7 +95,7 @@ test('Lists and Dropdowns', async ({ page }) => {
 		"Corporate": 'rgb(255, 255, 255)',
 	}
 
-	for (const color in colors) {
+	for (const color in colors) {   // iterating an object -> use for-in
 		await menuDropdown.click()
 		await optionList.filter({ hasText: color }).click()
 		await expect(header).toHaveCSS('background-color', colors[color]) // [] get the VALUE of the object element
