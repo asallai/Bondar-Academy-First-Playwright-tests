@@ -50,54 +50,68 @@ test.describe('Form Layouts page', async () => {
 		await expect(usingTheGridEmailForm.getByLabel('Option 1')).not.toBeChecked()
 		await expect(usingTheGridEmailForm.getByLabel('Option 2')).toBeChecked()
 	})
-})
 
-test('Checkboxes', async ({ page }) => {
-	await page.getByText('Modal & Overlays').click()
-	await page.getByText('Toastr').click()
+	test('Checkboxes', async ({ page }) => {
+		await page.getByText('Modal & Overlays').click()
+		await page.getByText('Toastr').click()
 
-	await page.getByRole('checkbox', { name: 'Hide on click' }).uncheck({ force: true })
+		await page.getByRole('checkbox', { name: 'Hide on click' }).uncheck({ force: true })
 
-	await page.getByRole('checkbox', { name: 'Prevent arising of duplicate toast' }).check({ force: true })
+		await page.getByRole('checkbox', { name: 'Prevent arising of duplicate toast' }).check({ force: true })
 
-	const allBoxes = page.getByRole('checkbox')
-	// all() creates an array from the locators so that we can iterate over them
-	// Since all() returns a Promise, we should use await.
-	for (const box of await allBoxes.all()) {   // iterating an array -> use for-of
-		await box.check({ force: true })
-		expect(await box.isChecked()).toBeTruthy()
+		const allBoxes = page.getByRole('checkbox')
+		// all() creates an array from the locators so that we can iterate over them
+		// Since all() returns a Promise, we should use await.
+		for (const box of await allBoxes.all()) {
+			// iterating an array -> use for-of
+			await box.check({ force: true })
+			expect(await box.isChecked()).toBeTruthy()
 
-		await box.uncheck({ force: true })
-		expect(await box.isChecked()).toBeFalsy()
-	}
-})
+			await box.uncheck({ force: true })
+			expect(await box.isChecked()).toBeFalsy()
+		}
+	})
 
-test('Lists and Dropdowns', async ({ page }) => {
-	const menuDropdown = page.locator('ngx-header nb-select')
-	await menuDropdown.click()
-
-	page.getByRole('list') // when the list has UL tag
-	page.getByRole('listitem') // whan the list has LI tag
-
-	// const optionList = page.getByRole('list').locator('nb-option')
-	const optionList = page.locator('nb-option-list nb-option')
-	await expect(optionList).toHaveText(['Light', 'Dark', 'Cosmic', 'Corporate'])
-	await optionList.filter({ hasText: 'Cosmic' }).click()
-
-	// background color checking
-	const header = page.locator('nb-layout-header')
-	await expect(header).toHaveCSS('background-color', 'rgb(50, 50, 89)')
-
-	const colors = {
-		"Light": 'rgb(255, 255, 255)',
-		"Dark": 'rgb(34, 43, 69)',
-		"Cosmic": 'rgb(50, 50, 89)',
-		"Corporate": 'rgb(255, 255, 255)',
-	}
-
-	for (const color in colors) {   // iterating an object -> use for-in
+	test('Lists and Dropdowns', async ({ page }) => {
+		const menuDropdown = page.locator('ngx-header nb-select')
 		await menuDropdown.click()
-		await optionList.filter({ hasText: color }).click()
-		await expect(header).toHaveCSS('background-color', colors[color]) // [] get the VALUE of the object element
-	}
+
+		page.getByRole('list') // when the list has UL tag
+		page.getByRole('listitem') // whan the list has LI tag
+
+		// const optionList = page.getByRole('list').locator('nb-option')
+		const optionList = page.locator('nb-option-list nb-option')
+		await expect(optionList).toHaveText(['Light', 'Dark', 'Cosmic', 'Corporate'])
+		await optionList.filter({ hasText: 'Cosmic' }).click()
+
+		// background color checking
+		const header = page.locator('nb-layout-header')
+		await expect(header).toHaveCSS('background-color', 'rgb(50, 50, 89)')
+
+		const colors = {
+			Light: 'rgb(255, 255, 255)',
+			Dark: 'rgb(34, 43, 69)',
+			Cosmic: 'rgb(50, 50, 89)',
+			Corporate: 'rgb(255, 255, 255)',
+		}
+
+		for (const color in colors) {
+			// iterating an object -> use for-in
+			await menuDropdown.click()
+			await optionList.filter({ hasText: color }).click()
+			await expect(header).toHaveCSS('background-color', colors[color]) // [] get the VALUE of the object element
+		}
+	})
+
+	test('Tooltips', async ({ page }) => {
+		await page.getByText('Modal & Overlays').click()
+		await page.getByText('Tooltip').click()
+
+		const toolTipCard = page.locator('nb-card', { hasText: 'Tooltip Placements' })
+		await toolTipCard.getByRole('button', { name: 'Top' }).hover()
+
+		page.getByRole('tooltip') // if 'role' is assigned to the tooltip
+		const tooltip = await page.locator('nb-tooltip').textContent()
+		expect(tooltip).toEqual('This is a tooltip') 
+	})
 })
