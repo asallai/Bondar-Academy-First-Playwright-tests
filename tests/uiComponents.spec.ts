@@ -112,6 +112,20 @@ test.describe('Form Layouts page', async () => {
 
 		page.getByRole('tooltip') // if 'role' is assigned to the tooltip
 		const tooltip = await page.locator('nb-tooltip').textContent()
-		expect(tooltip).toEqual('This is a tooltip') 
+		expect(tooltip).toEqual('This is a tooltip')
+	})
+
+	test('Dialog box (browser related', async ({ page }) => {
+		await page.getByText('Tables & Data').click()
+		await page.getByText('Smart Table').click()
+
+		// Listener for the browser dialog (waiting for the 'dialog' event)
+		page.on('dialog', (dialog) => {
+			expect(dialog.message()).toEqual('Are you sure you want to delete?')
+			dialog.accept()
+		})
+
+		await page.getByRole('table').locator('tr', { hasText: 'mdo@gmail.com' }).locator('.nb-trash').click()
+		await expect(page.locator('table tr').first()).not.toHaveText('mdo@gmail.com')
 	})
 })
