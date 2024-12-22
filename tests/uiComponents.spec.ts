@@ -128,7 +128,7 @@ test.describe('Form Layouts page', async () => {
 
 		// Action
 		await page.getByRole('table').locator('tr', { hasText: 'mdo@gmail.com' }).locator('.nb-trash').click()
-		// Expect the action
+		// Expect the result of the action
 		await expect(page.locator('table tr').first()).not.toHaveText('mdo@gmail.com')
 	})
 })
