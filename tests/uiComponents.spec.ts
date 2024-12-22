@@ -120,12 +120,15 @@ test.describe('Form Layouts page', async () => {
 		await page.getByText('Smart Table').click()
 
 		// Listener for the browser dialog (waiting for the 'dialog' event)
+		// It MUST be defined before the action
 		page.on('dialog', (dialog) => {
 			expect(dialog.message()).toEqual('Are you sure you want to delete?')
 			dialog.accept()
 		})
 
+		// Action
 		await page.getByRole('table').locator('tr', { hasText: 'mdo@gmail.com' }).locator('.nb-trash').click()
+		// Expect the action
 		await expect(page.locator('table tr').first()).not.toHaveText('mdo@gmail.com')
 	})
 })
