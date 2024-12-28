@@ -137,21 +137,21 @@ test('Web tables', async ({ page }) => {
 	await page.getByText('Smart table').click()
 
 	// 1. Get the row by any text in this row
-	// const targetRow = page.getByRole('row', { name: 'twitter@outlook.com' })
-	// await targetRow.locator('.nb-edit').click()
-	// await page.locator('input-editor').getByPlaceholder('Age').fill('35')
-	// await page.locator('.nb-checkmark').click()
+	const targetRow = page.getByRole('row', { name: 'twitter@outlook.com' })
+	await targetRow.locator('.nb-edit').click()
+	await page.locator('input-editor').getByPlaceholder('Age').fill('35')
+	await page.locator('.nb-checkmark').click()
 
-	// // 2. Get the row based on the value in specific column
-	// // Go to the 2.page of the table
-	// await page.locator('.ng2-smart-pagination-nav').getByText('2').click() // click 2.page of the table
-	// // Search for the row(s)  -->  page.getByRole('row', { name: '11'})
-	// // Search for the 2nd column and '11' in this column  -->  .filter({ has: page.locator('td').nth(1).getByText('11')
-	// const targetRowById = page.getByRole('row', { name: '11' }).filter({ has: page.locator('td').nth(1).getByText('11') })
-	// await targetRowById.locator('.nb-edit').click()
-	// await page.locator('input-editor').getByPlaceholder('E-mail').fill('test@test.com')
-	// await page.locator('.nb-checkmark').click()
-	// await expect(targetRowById.locator('td').nth(5)).toHaveText('test@test.com')
+	// 2. Get the row based on the value in specific column
+	// Go to the 2.page of the table
+	await page.locator('.ng2-smart-pagination-nav').getByText('2').click() // click 2.page of the table
+	// Search for the row(s)  -->  page.getByRole('row', { name: '11'})
+	// Search for the 2nd column and '11' in this column  -->  .filter({ has: page.locator('td').nth(1).getByText('11')
+	const targetRowById = page.getByRole('row', { name: '11' }).filter({ has: page.locator('td').nth(1).getByText('11') })
+	await targetRowById.locator('.nb-edit').click()
+	await page.locator('input-editor').getByPlaceholder('E-mail').fill('test@test.com')
+	await page.locator('.nb-checkmark').click()
+	await expect(targetRowById.locator('td').nth(5)).toHaveText('test@test.com')
 
 	// 3. Test filter of the table
 	const ages = ['20', '30', '40']
