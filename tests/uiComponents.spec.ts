@@ -159,11 +159,11 @@ test('Web tables', async ({ page }) => {
 	for (let age of ages) {
 		await page.locator('input-filter').getByPlaceholder('Age').clear()
 		await page.locator('input-filter').getByPlaceholder('Age').fill(age)
-		await page.waitForTimeout(500)
+		await page.waitForTimeout(200)
 		const ageRows = page.locator('tbody tr')
 
 		for (let row of await ageRows.all()) {
-			let cellValue = row.locator('td').last().textContent()
+			let cellValue = await row.locator('td').last().textContent()
 			expect(cellValue).toEqual(age)
 		}
 	}
