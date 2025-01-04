@@ -168,3 +168,33 @@ test('Web tables', async ({ page }) => {
 		}
 	}
 })
+
+test('Date picker', async ({ page }) => {
+	await page.getByText('Forms').click()
+	await page.getByText('Datepicker').click()
+
+	const calendarInputField = page.getByPlaceholder('Form Picker')
+	await calendarInputField.click()
+
+	let date = new Date()
+	date.setDate(date.getDate() + 365) // Dynamic date: Select the 365th day from today
+	const day = date.getDate().toString()
+
+	const monthShort = date.toLocaleString('EN-US', { month: 'short' })
+	const monthLong = date.toLocaleString('EN-US', { month: 'long' })
+	const year = date.getFullYear()
+	const expectedDate = `${monthShort} ${day}, ${year}`
+
+	let calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+	const expectedMonthAndYear = ` ${monthLong} ${year} `
+
+	while (!calendarMonthAndYear.includes(expectedMonthAndYear)) {
+		await page.locator('nb-calendar-pageable-navigation [data-name="chevron-right"]').click()
+		calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent()
+	}
+
+	// We have to use 'class=' --> Otherwise the day could be selected from the previous/next month (e.g. '1')
+	// We have to use 'exact' --> Otherwise 'getByText' provides everything containing the day (e.g. '1' -> '1', '10', '11'...)
+	await page.locator('[class="day-cell ng-star-inserted"]').getByText(day, { exact: true }).click()
+	await expect(calendarInputField).toHaveValue(expectedDate)
+})
