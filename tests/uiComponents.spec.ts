@@ -178,7 +178,8 @@ test('Date picker', async ({ page }) => {
 
 	let date = new Date()
 	date.setDate(date.getDate() + 365) // Dynamic date: Select the 365th day from today
-	const day = date.getDate().toString()
+	let day = date.getDate().toString(2)
+	day = date.toLocaleString('EN-US', { day: '2-digit' })
 
 	const monthShort = date.toLocaleString('EN-US', { month: 'short' })
 	const monthLong = date.toLocaleString('EN-US', { month: 'long' })
