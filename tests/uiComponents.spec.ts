@@ -199,3 +199,30 @@ test('Date picker', async ({ page }) => {
 	await page.locator('[class="day-cell ng-star-inserted"]').getByText(day, { exact: true }).click()
 	await expect(calendarInputField).toHaveValue(expectedDate)
 })
+
+test('Sliders', async ({ page }) => {
+	// Update the slider attribute
+	const tempGauge = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle')
+	await tempGauge.evaluate((node) => {
+		node.setAttribute('cx', '228.815')
+		node.setAttribute('cy', '228.815')
+	})
+	await tempGauge.click()
+
+	// Mouse movement
+	const tempBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
+	tempBox.scrollIntoViewIfNeeded()
+
+	const box = await tempBox.boundingBox()
+	// If we use a circle (instead of a box): Define the circle center as a starting point
+	const x = box.x + box.y / 2
+	const y = box.y + box.height / 2
+
+	await page.mouse.move(x, y) // Put the mouse into the circle center
+	await page.mouse.down() // Simulates the left key button of the mouse
+	await page.mouse.move(x + 100, y) // Mouse moves to right
+	await page.mouse.move(x + 100, y + 100)	// Mouse moves to down
+	await page.mouse.up()	// Release the mouse button
+
+	await expect(tempBox).toContainText('30')
+})
