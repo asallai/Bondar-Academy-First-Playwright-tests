@@ -17,27 +17,27 @@ export class NavigationPage {
 		this.toastrMenuItem = page.getByText('Toastr')
 	}
 
-	async navigateToFormLayoutsPage() {
+	async formLayoutsPage() {
 		await this.selectGroupMenuItem('Forms')
 		await this.formLayoutMenuItem.click()
 	}
 
-	async navigateToDatePickerPage() {
+	async datePickerPage() {
 		await this.selectGroupMenuItem('Forms')
 		await this.datePickerMenuItem.click()
 	}
 
-	async navigateToSmartTablePage() {
+	async smartTablePage() {
 		await this.selectGroupMenuItem('Tables & Data')
 		await this.smartTableMenuItem.click()
 	}
 
-	async navigateToTooltipPage() {
+	async tooltipPage() {
 		await this.selectGroupMenuItem('Modal & Overlays')
 		await this.tooltipMenuItem.click()
 	}
 
-	async navigateToToastrPage() {
+	async toastrPage() {
 		await this.selectGroupMenuItem('Modal & Overlays')
 		await this.toastrMenuItem.click()
 	}
